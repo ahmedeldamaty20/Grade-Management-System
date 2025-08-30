@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GMS.DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250829181717_UserModules")]
-    partial class UserModules
+    [Migration("20250830205748_AccountModule")]
+    partial class AccountModule
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,25 +120,20 @@ namespace GMS.DAL.Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstructorId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InstructorId");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Courses");
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("GMS.DAL.Models.Grade", b =>
@@ -161,12 +156,11 @@ namespace GMS.DAL.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SessionId");
+
                     b.HasIndex("TraineeId");
 
-                    b.HasIndex("SessionId", "TraineeId")
-                        .IsUnique();
-
-                    b.ToTable("Grades");
+                    b.ToTable("Grade");
                 });
 
             modelBuilder.Entity("GMS.DAL.Models.Session", b =>
@@ -190,7 +184,7 @@ namespace GMS.DAL.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Session");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -330,8 +324,7 @@ namespace GMS.DAL.Data.Migrations
                 {
                     b.HasOne("GMS.DAL.Models.ApplicationUser", "Instructor")
                         .WithMany("CoursesAsInstructor")
-                        .HasForeignKey("InstructorId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("InstructorId");
 
                     b.Navigation("Instructor");
                 });

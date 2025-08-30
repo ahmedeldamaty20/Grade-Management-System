@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GMS.DAL.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class UserModules : Migration
+    public partial class AccountModule : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -162,28 +162,27 @@ namespace GMS.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "Course",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InstructorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.PrimaryKey("PK_Course", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Courses_AspNetUsers_InstructorId",
+                        name: "FK_Course_AspNetUsers_InstructorId",
                         column: x => x.InstructorId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sessions",
+                name: "Session",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -194,17 +193,17 @@ namespace GMS.DAL.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                    table.PrimaryKey("PK_Session", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sessions_Courses_CourseId",
+                        name: "FK_Session_Course_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Courses",
+                        principalTable: "Course",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Grades",
+                name: "Grade",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -215,17 +214,17 @@ namespace GMS.DAL.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Grades", x => x.Id);
+                    table.PrimaryKey("PK_Grade", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Grades_AspNetUsers_TraineeId",
+                        name: "FK_Grade_AspNetUsers_TraineeId",
                         column: x => x.TraineeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Grades_Sessions_SessionId",
+                        name: "FK_Grade_Session_SessionId",
                         column: x => x.SessionId,
-                        principalTable: "Sessions",
+                        principalTable: "Session",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -276,30 +275,23 @@ namespace GMS.DAL.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_InstructorId",
-                table: "Courses",
+                name: "IX_Course_InstructorId",
+                table: "Course",
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_Name",
-                table: "Courses",
-                column: "Name",
-                unique: true);
+                name: "IX_Grade_SessionId",
+                table: "Grade",
+                column: "SessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grades_SessionId_TraineeId",
-                table: "Grades",
-                columns: new[] { "SessionId", "TraineeId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Grades_TraineeId",
-                table: "Grades",
+                name: "IX_Grade_TraineeId",
+                table: "Grade",
                 column: "TraineeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sessions_CourseId",
-                table: "Sessions",
+                name: "IX_Session_CourseId",
+                table: "Session",
                 column: "CourseId");
         }
 
@@ -322,16 +314,16 @@ namespace GMS.DAL.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Grades");
+                name: "Grade");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Sessions");
+                name: "Session");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Course");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
