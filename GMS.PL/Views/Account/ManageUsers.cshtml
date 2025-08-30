@@ -1,0 +1,371 @@
+@model ManageUsersViewModel
+@{
+    ViewData["Title"] = "Manage Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-primary"><i class="fas fa-users me-2"></i>Manage Users</h1>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-primary rounded-pill px-4">
+            <i class="fas fa-user-plus me-2"></i>Add New User
+        </a>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="shadow-lg rounded-4 overflow-hidden mb-4" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
+        <div class="p-4">
+            <h5 class="fw-semibold text-primary"><i class="fas fa-search me-2"></i>Search & Filter</h5>
+            <form asp-action="ManageUsers" method="get">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="searchTerm" class="form-label small fw-semibold">Search</label>
+                        <input asp-for="SearchTerm" class="form-control rounded-pill" placeholder="Name or Email..." />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="roleFilter" class="form-label small fw-semibold">Role</label>
+                        <select asp-for="RoleFilter" class="form-select rounded-pill">
+                            <option value="">All Roles</option>
+                            <option value="Trainee">Trainee</option>
+                            <option value="Instructor">Instructor</option>
+                            <option value="Admin">Admin</option>
+                            <option value="SuperAdmin">Super Admin</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="isActiveFilter" class="form-label small fw-semibold">Status</label>
+                        <select asp-for="IsActiveFilter" class="form-select rounded-pill">
+                            <option value="">All Status</option>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100">
+                            <i class="fas fa-search me-1"></i>Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="shadow-lg rounded-4 overflow-hidden" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
+        <div class="p-4">
+            <h5 class="fw-semibold text-primary"><i class="fas fa-list me-2"></i>Users (@Model.Users.Count)</h5>
+            @if (Model.Users.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><i class="fas fa-user me-1"></i>Name</th>
+                                <th><i class="fas fa-envelope me-1"></i>Email</th>
+                                <th><i class="fas fa-user-tag me-1"></i>Role</th>
+                                <th><i class="fas fa-toggle-on me-1"></i>Status</th>
+                                <th><i class="fas fa-calendar me-1"></i>Created</th>
+                                <th><i class="fas fa-cogs me-1"></i>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-primary rounded-circle d-flex align-items-center justify-content-center me-2">
+                                                <span class="text-white fw-bold">@user.FullName.Substring(0, 1).ToUpper()</span>
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold">@user.FullName</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="small">@user.Email</td>
+                                    <td>
+                                        @switch (user.Role)
+                                        {
+                                            case UserRole.SuperAdmin:
+                                                <span class="badge bg-danger"><i class="fas fa-crown me-1"></i>Super Admin</span>
+                                                break;
+                                            case UserRole.Admin:
+                                                <span class="badge bg-warning text-dark"><i class="fas fa-user-shield me-1"></i>Admin</span>
+                                                break;
+                                            case UserRole.Instructor:
+                                                <span class="badge bg-info"><i class="fas fa-chalkboard-teacher me-1"></i>Instructor</span>
+                                                break;
+                                            case UserRole.Trainee:
+                                                <span class="badge bg-success"><i class="fas fa-graduation-cap me-1"></i>Trainee</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.IsActive)
+                                        {
+                                            <span class="badge bg-success"><i class="fas fa-check me-1"></i>Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary"><i class="fas fa-times me-1"></i>Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">@user.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm manage-users-actions" role="group">
+                                            <a asp-action="UserDetails" asp-controller="Account" asp-route-id="@user.Id" class="btn btn-outline-primary rounded-circle" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <form asp-action="ToggleUserStatus" asp-controller="Account" method="post" class="d-inline user-status-form">
+                                                <input type="hidden" name="userId" value="@user.Id" />
+                                                @if (user.IsActive)
+                                                {
+                                                    <button type="button" class="btn btn-outline-warning rounded-pill toggle-status-btn rounded-circle" title="Deactivate User"
+                                                            data-user-id="@user.Id" data-user-name="@user.FullName" data-action="deactivate">
+                                                        <i class="fas fa-user-slash"></i>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-outline-success rounded-pill toggle-status-btn rounded-circle" title="Activate User"
+                                                            data-user-id="@user.Id" data-user-name="@user.FullName" data-action="activate">
+                                                        <i class="fas fa-user-check"></i>
+                                                    </button>
+                                                }
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No users found</h5>
+                    <p class="text-muted small">Try adjusting your search criteria or add a new user.</p>
+                    <a href="@Url.Action("Register", "Account")" class="btn btn-primary rounded-pill px-4">
+                        <i class="fas fa-user-plus me-2"></i>Add First User
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Modern Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
+                <div class="modal-header border-0 pb-0">
+                    <div class="w-100 text-center">
+                        <div class="modal-icon mb-3">
+                            <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="modal-title fw-bold text-dark" id="confirmModalLabel">Confirm Action</h4>
+                    </div>
+                </div>
+                <div class="modal-body text-center px-4 pb-4">
+                    <p class="lead text-muted mb-4" id="confirmMessage">Are you sure you want to perform this action?</p>
+                    <p class="text-sm text-muted mb-4">
+                        <strong>User:</strong> <span id="confirmUserName" class="text-primary"></span>
+                    </p>
+                </div>
+                <div class="modal-footer border-0 pt-0 justify-content-center gap-3">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary rounded-pill px-4 py-2" id="confirmActionBtn">
+                        <i class="fas fa-check me-2"></i>Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-sm {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+        line-height: 35px;
+    }
+    /* Modern Modal Styles */
+    .modal-content {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .modal-icon {
+        animation: pulse-warning 2s infinite;
+    }
+
+    @@keyframes pulse-warning {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 2rem 1.5rem 1rem;
+    }
+
+    .modal-footer {
+        background: #f8f9fa;
+        padding: 1.5rem;
+    }
+
+    .modal-backdrop {
+        backdrop-filter: blur(5px);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    /* Button hover effects */
+    .toggle-status-btn {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .toggle-status-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-status-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .toggle-status-btn:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+    /* Fade in animation for modal */
+    .modal.fade .modal-dialog {
+        transform: scale(0.8) translateY(-50px);
+        transition: all 0.3s ease;
+    }
+
+    .modal.show .modal-dialog {
+        transform: scale(1) translateY(0);
+    }
+    /* Ripple effect for buttons */
+    .ripple {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        animation: ripple-effect 0.6s linear;
+        pointer-events: none;
+    }
+
+    @@keyframes ripple-effect {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale(10);
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmUserName = document.getElementById('confirmUserName');
+        const confirmActionBtn = document.getElementById('confirmActionBtn');
+        const modalIcon = document.querySelector('.modal-icon i');
+        let currentForm = null;
+
+        // Handle toggle status button clicks
+        document.querySelectorAll('.toggle-status-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const userId = this.getAttribute('data-user-id');
+                const userName = this.getAttribute('data-user-name');
+                const action = this.getAttribute('data-action');
+                currentForm = this.closest('.user-status-form');
+
+                // Update modal content based on action
+                if (action === 'deactivate') {
+                    confirmMessage.textContent = 'Are you sure you want to deactivate this user? They will lose access to the system.';
+                    confirmActionBtn.className = 'btn btn-warning rounded-pill px-4 py-2';
+                    confirmActionBtn.innerHTML = '<i class="fas fa-user-slash me-2"></i>Deactivate';
+                    modalIcon.className = 'fas fa-user-slash text-warning';
+                } else {
+                    confirmMessage.textContent = 'Are you sure you want to activate this user? They will regain access to the system.';
+                    confirmActionBtn.className = 'btn btn-success rounded-pill px-4 py-2';
+                    confirmActionBtn.innerHTML = '<i class="fas fa-user-check me-2"></i>Activate';
+                    modalIcon.className = 'fas fa-user-check text-success';
+                }
+                confirmUserName.textContent = userName;
+                confirmModal.show();
+            });
+        });
+
+        // Handle confirm button click
+        confirmActionBtn.addEventListener('click', function () {
+            if (currentForm) {
+                // Add loading state
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                this.disabled = true;
+                // Submit the form after a short delay for UX
+                setTimeout(() => {
+                    currentForm.submit();
+                }, 500);
+            }
+        });
+
+        // Reset modal when hidden
+        document.getElementById('confirmModal').addEventListener('hidden.bs.modal', function () {
+            currentForm = null;
+            confirmActionBtn.disabled = false;
+            confirmActionBtn.innerHTML = '<i class="fas fa-check me-2"></i>Confirm';
+        });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.toggle-status-btn').forEach(button => {
+            button.addEventListener('click', function (e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Access Denied";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white text-center">
+                <h2><i class="fas fa-ban me-2"></i>Access Denied</h2>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-4">
+                    <i class="fas fa-shield-alt fa-5x text-danger mb-3"></i>
+                    <h4>You don't have permission to access this resource</h4>
+                    <p class="text-muted">
+                        The page you're trying to access requires higher privileges than your current account has.
+                    </p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>What you can do:</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="fas fa-arrow-left me-2"></i>Go back to the previous page</li>
+                        <li><i class="fas fa-home me-2"></i>Return to the home page</li>
+                        <li><i class="fas fa-envelope me-2"></i>Contact your administrator for access</li>
+                    </ul>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <button onclick="history.back()" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Go Back
+                    </button>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Home Page
+                    </a>
+                </div>
+            </div>
+            <div class="card-footer text-center text-muted">
+                <small>
+                    <i class="fas fa-clock me-1"></i>
+                    If you believe this is an error, please contact your system administrator.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,206 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Bootstrap badge colors for different grades */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-primary {
+    background-color: #007bff;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+.bg-primary {
+    background-color: #6a28ea !important;
+}
+
+.landing::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100vh;
+    background-color: #6a28ea;
+    z-index: -1;
+    transform: skewY(-3deg);
+    transform-origin: left top;
+}
+
+header .navbar.navbar-enhanced {
+    z-index: 999;
+    padding-left: 0;
+    padding-right: 0;
+    position: fixed;
+    inset: 0% 0% auto;
+}
+
+.manage-users-actions {
+    gap: .3rem;
+}
+
+.manage-users-actions .rounded-circle {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50% !important;
+}
+
+
+
+
+
+
+.containermain {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+}
+
+.slidersectionparent {
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1280px;
+    margin-left: 0;
+    margin-right: 0;
+    display: flex;
+}
+
+.slidertopdiv.centeraligned {
+    text-align: center;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slidertopdiv {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    display: flex;
+}
+
+.slidertopleftdiv.centeraligned.librarytextdiv {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.slidertopleftdiv.centeraligned {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.slidertopleftdiv {
+    flex-flow: column;
+    display: flex;
+}
+
+
+
+.librarycard {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.library-card-main {
+    border-radius: 16px;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 370px;
+    display: flex;
+    overflow: hidden;
+}
+
+.library-card-main {
+    border-radius: 16px;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 370px;
+    display: flex;
+    overflow: hidden;
+}
+
+.swiper.swiper5 {
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1330px;
+    padding-bottom: 0;
+}
+
+.swiper {
+    justify-content: center;
+    align-items: stretch;
+    display: flex;
+    overflow: hidden;
+}
+
+.swiper.swiper5 {
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1330px;
+    padding-bottom: 0;
+}
+
+.swiper-wrapper {
+    grid-column-gap: .7rem;
+    grid-row-gap: .7rem;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    display: flex;
+}

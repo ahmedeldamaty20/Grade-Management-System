@@ -1,0 +1,107 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register New User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="shadow-lg rounded-4 overflow-hidden"
+                 style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
+
+                <div class="p-4 p-md-5">
+
+                    <!-- Form Header -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-primary">
+                            <i class="fas fa-user-plus me-2"></i>Register New User
+                        </h2>
+                        <p class="text-muted small">
+                            Fill in the details below to create a new account
+                        </p>
+                    </div>
+
+                    <form asp-action="Register" asp-controller="Account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- User Info -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FullName" class="form-label small fw-semibold">
+                                    <i class="fas fa-user me-1"></i>Full Name *
+                                </label>
+                                <input asp-for="FullName" class="form-control rounded-pill" placeholder="Enter full name" />
+                                <span asp-validation-for="FullName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label small fw-semibold">
+                                    <i class="fas fa-envelope me-1"></i>Email Address *
+                                </label>
+                                <input asp-for="Email" class="form-control rounded-pill" placeholder="Enter email address" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Credentials -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Password" class="form-label small fw-semibold">
+                                    <i class="fas fa-lock me-1"></i>Password *
+                                </label>
+                                <input asp-for="Password" class="form-control rounded-pill" placeholder="Enter password" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Minimum 6 characters, upper & lowercase, and digits
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ConfirmPassword" class="form-label small fw-semibold">
+                                    <i class="fas fa-lock me-1"></i>Confirm Password *
+                                </label>
+                                <input asp-for="ConfirmPassword" class="form-control rounded-pill" placeholder="Confirm password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="mb-3">
+                            <label asp-for="Role" class="form-label small fw-semibold">
+                                <i class="fas fa-user-tag me-1"></i>User Role *
+                            </label>
+                            <select asp-for="Role" class="form-select rounded-pill">
+                                <option value="">-- Select Role --</option>
+                                <option value="Trainee">Trainee - Student</option>
+                                <option value="Instructor">Instructor - Manages courses</option>
+                                <option value="Admin">Admin - (SuperAdmin only)</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger small"></span>
+                            <div class="form-text">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Role determines user permissions
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="@Url.Action("ManageUsers", "Account")" class="btn btn-outline-secondary rounded-pill">
+                                <i class="fas fa-arrow-left me-2"></i>Back
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="fas fa-user-plus me-2"></i>Create User
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
