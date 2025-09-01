@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GMS.DAL\GMS.DAL.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\GMS.DAL\GMS.DAL.csproj" />
   </ItemGroup>
 
 </Project>

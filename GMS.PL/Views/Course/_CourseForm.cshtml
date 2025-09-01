@@ -1,0 +1,40 @@
+﻿@model GMS.BLL.ViewModels.CourseVM
+
+<div class="card-body p-4">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Category" class="form-label"></label>
+        <select asp-for="Category" asp-items="@Html.GetEnumSelectList<CourseCategory>()" class="form-select">
+            <option value="0">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="InstructorId" class="form-label"></label>
+        <select asp-for="InstructorId" asp-items="ViewBag.Instructors" class="form-select">
+            <option value="">-- Select Instructor --</option>
+        </select>
+        <span asp-validation-for="InstructorId" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-gradient-primary shadow-enhanced">
+            <i class="fas fa-save me-1"></i> Save
+        </button>
+        <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+            <i class="fas fa-times me-1"></i> Cancel
+        </a>
+    </div>
+</div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+

@@ -1,0 +1,11 @@
+﻿@model GMS.BLL.ViewModels.CourseVM
+@{
+    ViewData["Title"] = "Edit Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4"><i class="fas fa-edit me-2"></i>Edit Course</h2>
+
+<form asp-action="Edit" method="post" asp-route-itemid="@Model.Id">
+    @Html.Partial("_CourseForm", Model)
+</form>

@@ -6,7 +6,8 @@ using System.Reflection;
 namespace GMS.DAL.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public DbSet<Course> Course { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
 

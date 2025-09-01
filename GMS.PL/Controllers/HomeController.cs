@@ -1,12 +1,15 @@
+using GMS.BLL.Interfaces;
 using GMS.DAL.Models;
+using GMS.DAL.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GMS.PL.Controllers;
-public class HomeController(UserManager<ApplicationUser> userManager) : Controller
+public class HomeController(UserManager<ApplicationUser> userManager,ICourseService _courseService) : Controller
 {
-	public IActionResult Index()
+
+    public IActionResult Index()
 	{
 		if (User.Identity?.IsAuthenticated == true)
 		{
@@ -21,12 +24,11 @@ public class HomeController(UserManager<ApplicationUser> userManager) : Controll
 	{
 		var currentUser = await userManager.GetUserAsync(User);
 
-		//ViewBag.TotalCourses = (await _courseRepository.GetAllAsync()).Count();
+		ViewBag.TotalCourses = (await _courseService.GetCoursesCountAsync(null,null));
 		//ViewBag.TotalSessions = (await _sessionRepository.GetAllAsync()).Count();
 		//ViewBag.TotalUsers = (await _userRepository.GetAllAsync()).Count();
 		//ViewBag.TotalGrades = (await _gradeRepository.GetAllAsync()).Count();
 
-		ViewBag.TotalCourses = 0;
 		ViewBag.TotalSessions = 0;
 		ViewBag.TotalUsers = 0;
 		ViewBag.TotalGrades = 0;

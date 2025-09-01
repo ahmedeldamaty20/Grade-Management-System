@@ -1,0 +1,12 @@
+﻿@model GMS.BLL.ViewModels.CourseVM
+@{
+    ViewData["Title"] = "Create Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4"><i class="fas fa-plus me-2"></i>Create Course</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    @Html.Partial("_CourseForm", Model)
+</form>
