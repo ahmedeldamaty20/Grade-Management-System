@@ -167,11 +167,19 @@ public class CourseController(ICourseService courseService, UserManager<Applicat
 		var pageSizes = new List<int> { 5, 10, 15 };
 		ViewBag.PageSizes = new SelectList(pageSizes, pageSize);
 	}
-	public IActionResult NameExistVal(string name)
+	public IActionResult NameExistVal(string name,int Id)
 	{
-		bool exists = context.Course.Any(c => c.Name == name);
-		if (exists)
-			return Json($"Course name '{name}' is already taken.");
+		var exists = context.Course.FirstOrDefault(c => c.Name == name);
+		if (exists !=null)
+		{
+			if (exists.Id == Id)
+			{
+				return Json(true);
+			}
+			else {
+                return Json("this name is already taken");
+            }
+		}
 		return Json(true);
 	}
 }

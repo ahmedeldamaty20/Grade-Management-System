@@ -18,7 +18,7 @@ namespace GMS.BLL.ViewModels
         public int Id { get; set; }
         [Required(ErrorMessage = "Course name is required")]
         [NoNumber]
-        [Remote(action: "NameExistVal", controller: "Course", ErrorMessage = "Course name is already taken")]
+        [Remote(action: "NameExistVal", controller: "Course", ErrorMessage = "Course name is already taken",AdditionalFields =nameof(Id))]
         [MinLength(3, ErrorMessage = "Course name must be at least 3 characters long")]
         [MaxLength(50, ErrorMessage = "Course name cannot exceed 50 characters")]
         public string Name { get; set; } = string.Empty;

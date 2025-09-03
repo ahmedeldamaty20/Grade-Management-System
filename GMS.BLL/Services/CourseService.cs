@@ -49,7 +49,7 @@ namespace GMS.BLL.Services
 
         public async Task SaveChangesAsync() { 
         
-        _courseRepo.SaveChangesAsync();
+        await _courseRepo.SaveChangesAsync();
         }
         public async Task<int> GetCoursesCountAsync(string? search, string? category)
         {
