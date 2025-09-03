@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GMS.DAL.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250830205748_AccountModule")]
-    partial class AccountModule
+    [Migration("20250902192416_Modules")]
+    partial class Modules
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,11 +156,12 @@ namespace GMS.DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SessionId");
-
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("Grade");
+                    b.HasIndex("SessionId", "TraineeId")
+                        .IsUnique();
+
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("GMS.DAL.Models.Session", b =>

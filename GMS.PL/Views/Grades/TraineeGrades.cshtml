@@ -1,0 +1,88 @@
+@using GMS.BLL.ViewModels
+@model TraineeGradesViewModel
+
+@{
+  ViewData["Title"] = $"Grades for {Model.Trainee.FullName}";
+}
+
+<h2>Grades for @Model.Trainee.FullName</h2>
+
+<div class="card mb-3">
+  <div class="card-header">
+    <h5>Trainee Information</h5>
+  </div>
+  <div class="card-body">
+    <p><strong>Name:</strong> @Model.Trainee.FullName</p>
+    <p><strong>Email:</strong> @Model.Trainee.Email</p>
+    <p><strong>Total Grades:</strong> @Model.Grades.Count</p>
+    @if (Model.Grades.Any())
+    {
+      <p><strong>Average Grade:</strong> @Math.Round(Model.Grades.Average(g => g.Value), 2)%</p>
+    }
+  </div>
+</div>
+
+@if (Model.Grades.Any())
+{
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Session Dates</th>
+          <th>Grade</th>
+          <th>Performance</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var grade in Model.Grades.OrderByDescending(g => g.Session.StartDate))
+        {
+          <tr>
+            <td>@grade.Session.Course.Name</td>
+            <td>@grade.Session.StartDate.ToString("MM/dd/yyyy") - @grade.Session.EndDate.ToString("MM/dd/yyyy")</td>
+            <td>
+              <span class="badge badge-@(grade.Value >= 90 ? "success" : grade.Value >= 70 ? "warning" : "danger")">
+                @grade.Value%
+              </span>
+            </td>
+            <td>
+              @if (grade.Value >= 90)
+              {
+                <span class="text-success">Excellent</span>
+              }
+              else if (grade.Value >= 80)
+              {
+                <span class="text-info">Very Good</span>
+              }
+              else if (grade.Value >= 70)
+              {
+                <span class="text-warning">Good</span>
+              }
+              else if (grade.Value >= 60)
+              {
+                <span class="text-secondary">Satisfactory</span>
+              }
+              else
+              {
+                <span class="text-danger">Needs Improvement</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+else
+{
+  <div class="alert alert-info">
+    <h4>No grades recorded</h4>
+    <p>This trainee has not received any grades yet.</p>
+  </div>
+}
+
+<div>
+  <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.Trainee.Id" class="btn btn-info">View Trainee
+    Details</a>
+  <a asp-controller="Grades" asp-action="Index" class="btn btn-secondary">Back to Grades</a>
+</div>

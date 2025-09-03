@@ -1,0 +1,82 @@
+@model GradeListViewModel
+
+@{
+  ViewData["Title"] = "Grades";
+}
+
+<h2>Grades Management</h2>
+
+<p>
+  <a asp-action="Create" class="btn btn-primary">Record New Grade</a>
+</p>
+
+<form asp-action="Index" method="get" class="mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <select name="filterByTraineeId" class="form-control" onchange="this.form.submit()">
+        <option value="">-- All Trainees --</option>
+        @foreach (var trainee in Model.AvailableTrainees)
+        {
+          <option value="@trainee.Id" selected="@(Model.FilterByTraineeId?.ToString() == trainee.Id)">@trainee.FullName
+          </option>
+        }
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select name="filterBySessionId" class="form-control" onchange="this.form.submit()">
+        <option value="">-- All Sessions --</option>
+        @foreach (var session in Model.AvailableSessions)
+        {
+          <option value="@session.Id" selected="@(Model.FilterBySessionId == session.Id)">@session.Course.Name -
+            @session.StartDate.ToString("MM/dd/yyyy")</option>
+        }
+      </select>
+    </div>
+    <div class="col-md-2">
+      <a asp-action="Index" class="btn btn-secondary">Clear Filters</a>
+    </div>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Trainee</th>
+        <th>Course</th>
+        <th>Session Dates</th>
+        <th>Grade</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var item in Model.Grades)
+      {
+        <tr>
+          <td>@Html.DisplayFor(modelItem => item.Trainee.FullName)</td>
+          <td>@Html.DisplayFor(modelItem => item.Session.Course.Name)</td>
+          <td>@item.Session.StartDate.ToString("MM/dd/yyyy") - @item.Session.EndDate.ToString("MM/dd/yyyy")</td>
+          <td>
+            <span class="badge badge-@(item.Value >= 90 ? "success" : item.Value >= 70 ? "warning" : "danger")">
+              @Html.DisplayFor(modelItem => item.Value)%
+            </span>
+          </td>
+          <td>
+            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (!Model.Grades.Any())
+{
+  <div class="alert alert-info">
+    <h4>No grades found</h4>
+    <p>@((!string.IsNullOrEmpty(Model.FilterByTraineeId)) || Model.FilterBySessionId.HasValue ? "No grades match your current filters." :
+          "No grades have been recorded yet.")</p>
+  </div>
+}

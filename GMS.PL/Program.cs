@@ -18,6 +18,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICourseRepo, CourseRepo>();
 
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
 // Configure ASP.NET Core Identity for authentication and authorization
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {

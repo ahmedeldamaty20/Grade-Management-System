@@ -10,7 +10,7 @@ public class Repository<T>(ApplicationDbContext context) : IRepository<T> where 
 
     public virtual async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
 
-    public virtual async Task<T?> GetByIdAsync(string id) => await _dbSet.FindAsync(id);
+    public virtual async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
 
     public virtual async Task<T> AddAsync(T entity)
     {
@@ -26,7 +26,7 @@ public class Repository<T>(ApplicationDbContext context) : IRepository<T> where 
         return entity;
     }
 
-    public virtual async Task<bool> DeleteAsync(string id)
+    public virtual async Task<bool> DeleteAsync(int id)
     {
         var entity = await GetByIdAsync(id);
         if (entity == null) return false;
@@ -36,5 +36,5 @@ public class Repository<T>(ApplicationDbContext context) : IRepository<T> where 
         return true;
     }
 
-    public virtual async Task<bool> ExistsAsync(string id) => await _dbSet.FindAsync(id) != null;
+    public virtual async Task<bool> ExistsAsync(int id) => await _dbSet.FindAsync(id) != null;
 }

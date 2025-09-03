@@ -1,0 +1,56 @@
+@model GradeViewModel
+
+@{
+    ViewData["Title"] = "Edit Grade";
+}
+
+<h2>Edit Grade</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="form-group mb-3">
+                <label asp-for="SessionId" class="control-label"></label>
+                <select asp-for="SessionId" class="form-control">
+                    <option value="">-- Select Session --</option>
+                    @if (Model.AvailableSessions != null)
+                    {
+                        @foreach (var session in Model.AvailableSessions)
+                        {
+                            <option value="@session.Id">@(session.Course?.Name ?? "Unknown Course") - @session.StartDate.ToString("MM/dd/yyyy")</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="SessionId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="TraineeId" class="control-label"></label>
+                <select asp-for="TraineeId" class="form-control" asp-items="@(new SelectList(Model.AvailableTrainees ?? new List<ApplicationUser>(), "Id", "FullName"))">
+                    <option value="">-- Select Trainee --</option>
+                </select>
+                <span asp-validation-for="TraineeId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" class="form-control" type="number" min="0" max="100" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+                <small class="form-text text-muted">Enter a value between 0 and 100</small>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

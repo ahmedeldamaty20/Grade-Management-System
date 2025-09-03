@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GMS.DAL.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AccountModule : Migration
+    public partial class Modules : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -203,7 +203,7 @@ namespace GMS.DAL.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Grade",
+                name: "Grades",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -214,15 +214,15 @@ namespace GMS.DAL.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Grade", x => x.Id);
+                    table.PrimaryKey("PK_Grades", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Grade_AspNetUsers_TraineeId",
+                        name: "FK_Grades_AspNetUsers_TraineeId",
                         column: x => x.TraineeId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Grade_Session_SessionId",
+                        name: "FK_Grades_Session_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Session",
                         principalColumn: "Id",
@@ -280,13 +280,14 @@ namespace GMS.DAL.Data.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grade_SessionId",
-                table: "Grade",
-                column: "SessionId");
+                name: "IX_Grades_SessionId_TraineeId",
+                table: "Grades",
+                columns: new[] { "SessionId", "TraineeId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Grade_TraineeId",
-                table: "Grade",
+                name: "IX_Grades_TraineeId",
+                table: "Grades",
                 column: "TraineeId");
 
             migrationBuilder.CreateIndex(
@@ -314,7 +315,7 @@ namespace GMS.DAL.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Grade");
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

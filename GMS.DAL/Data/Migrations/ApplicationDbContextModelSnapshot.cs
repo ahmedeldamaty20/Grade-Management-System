@@ -153,11 +153,12 @@ namespace GMS.DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SessionId");
-
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("Grade");
+                    b.HasIndex("SessionId", "TraineeId")
+                        .IsUnique();
+
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("GMS.DAL.Models.Session", b =>

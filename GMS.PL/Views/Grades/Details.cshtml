@@ -1,0 +1,70 @@
+@model Grade
+
+@{
+  ViewData["Title"] = "Grade Details";
+}
+
+<h2>Grade Details</h2>
+
+<div>
+  <hr />
+  <dl class="row">
+    <dt class="col-sm-2">
+      Trainee
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Trainee.FullName)
+    </dd>
+    <dt class="col-sm-2">
+      Course
+    </dt>
+    <dd class="col-sm-10">
+      @Html.DisplayFor(model => model.Session.Course.Name)
+    </dd>
+    <dt class="col-sm-2">
+      Session Dates
+    </dt>
+    <dd class="col-sm-10">
+      @Model.Session.StartDate.ToString("MM/dd/yyyy") - @Model.Session.EndDate.ToString("MM/dd/yyyy")
+    </dd>
+    <dt class="col-sm-2">
+      Grade Value
+    </dt>
+    <dd class="col-sm-10">
+      <span class="badge badge-@(Model.Value >= 90 ? "success" : Model.Value >= 70 ? "warning" : "danger") badge-lg">
+        @Html.DisplayFor(model => model.Value)%
+      </span>
+    </dd>
+    <dt class="col-sm-2">
+      Performance
+    </dt>
+    <dd class="col-sm-10">
+      @if (Model.Value >= 90)
+      {
+        <span class="text-success"><strong>Excellent</strong></span>
+      }
+      else if (Model.Value >= 80)
+      {
+        <span class="text-info"><strong>Very Good</strong></span>
+      }
+      else if (Model.Value >= 70)
+      {
+        <span class="text-warning"><strong>Good</strong></span>
+      }
+      else if (Model.Value >= 60)
+      {
+        <span class="text-secondary"><strong>Satisfactory</strong></span>
+      }
+      else
+      {
+        <span class="text-danger"><strong>Needs Improvement</strong></span>
+      }
+    </dd>
+  </dl>
+</div>
+<div>
+  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+  <a asp-controller="Grades" asp-action="TraineeGrades" asp-route-id="@Model.TraineeId" class="btn btn-info">View All
+    Trainee Grades</a>
+  <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
