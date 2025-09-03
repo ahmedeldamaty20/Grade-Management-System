@@ -21,6 +21,7 @@ namespace GMS.DAL.Repositories
         public async Task<Course> AddAsync(Course entity)
         {
             await _context.Course.AddAsync(entity);
+            //await _context.SaveChangesAsync();
             return entity;
         }
 

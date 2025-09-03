@@ -80,9 +80,11 @@ var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
 try
 {
-	var isDatabaseCreated = await AppContext.Database.EnsureCreatedAsync();
+	await AppContext.Database.MigrateAsync();
 
-	if (isDatabaseCreated)
+	var isDatabaseCreated = AppContext.Users.Any();
+
+	if (!isDatabaseCreated)
 	{
 		// Create roles if they don't exist
 		await ApplicationDbContextSeeding.CreateRolesAsync(roleManager);
