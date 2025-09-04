@@ -82,7 +82,8 @@ else
 }
 
 <div>
-  <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.Trainee.Id" class="btn btn-info">View Trainee
+    <a asp-controller="Account" asp-action="Profile" asp-route-id="@Model.Trainee.Id" class="btn btn-info">
+        View Trainee
     Details</a>
   <a asp-controller="Grades" asp-action="Index" class="btn btn-secondary">Back to Grades</a>
 </div>
