@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Training_Management_System_ITI_Project.Controllers;
 
 [Authorize]
-public class GradesController(IGradeRepository gradeRepository, IAccountRepository accountRepository) : Controller
+public class GradesController(IGradeRepository gradeRepository, IAccountRepository accountRepository,ISessionService _sessionRepository) : Controller
 {
 
     public async Task<IActionResult> Index(string? filterByTraineeId, int? filterBySessionId)
@@ -19,9 +19,9 @@ public class GradesController(IGradeRepository gradeRepository, IAccountReposito
             FilterByTraineeId = filterByTraineeId,
             FilterBySessionId = filterBySessionId,
             AvailableTrainees = (await accountRepository.GetUsersByRoleAsync(UserRole.Trainee)).ToList(),
-            //AvailableSessions = (await _sessionRepository.GetSessionsWithCourseAsync()).ToList()
+            AvailableSessions = (await _sessionRepository.GetAllSessionsAsync()).ToList()
         };
-
+        
         if (!string.IsNullOrEmpty(filterByTraineeId))
         {
             viewModel.Grades = (await gradeRepository.GetGradesByTraineeAsync(filterByTraineeId)).ToList();
@@ -81,7 +81,7 @@ public class GradesController(IGradeRepository gradeRepository, IAccountReposito
     {
         var viewModel = new GradeViewModel
         {
-            //AvailableSessions = (await _sessionRepository.GetSessionsWithCourseAsync()).ToList(),
+            AvailableSessions = (await _sessionRepository.GetAllSessionsAsync()).ToList(),
             AvailableTrainees = (await accountRepository.GetUsersByRoleAsync(UserRole.Trainee)).ToList()
         };
         return View(viewModel);

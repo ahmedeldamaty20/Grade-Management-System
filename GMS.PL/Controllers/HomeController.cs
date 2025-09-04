@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GMS.PL.Controllers;
-public class HomeController(UserManager<ApplicationUser> userManager,ICourseService _courseService) : Controller
+public class HomeController(UserManager<ApplicationUser> userManager,ICourseService _courseService, ISessionService _sessionService) : Controller
 {
 
     public IActionResult Index()
@@ -25,13 +25,10 @@ public class HomeController(UserManager<ApplicationUser> userManager,ICourseServ
 		var currentUser = await userManager.GetUserAsync(User);
 
 		ViewBag.TotalCourses = (await _courseService.GetCoursesCountAsync(null,null));
-		//ViewBag.TotalSessions = (await _sessionRepository.GetAllAsync()).Count();
+		ViewBag.TotalSessions = (await _sessionService.GetSessionsCountAsync(null));
 		//ViewBag.TotalUsers = (await _userRepository.GetAllAsync()).Count();
 		//ViewBag.TotalGrades = (await _gradeRepository.GetAllAsync()).Count();
 
-		ViewBag.TotalSessions = 0;
-		ViewBag.TotalUsers = 0;
-		ViewBag.TotalGrades = 0;
 
 		ViewBag.UserRole = currentUser?.Role.ToString();
 		ViewBag.UserName = currentUser?.FullName;

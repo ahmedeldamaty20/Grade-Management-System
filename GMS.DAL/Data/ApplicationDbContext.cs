@@ -7,6 +7,7 @@ namespace GMS.DAL.Data;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
     public DbSet<Course> Course { get; set; }
+	public DbSet<Session> Session { get; set; }
     public DbSet<Grade> Grades { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
